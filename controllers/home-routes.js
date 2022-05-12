@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/post/:id", (req, res) => {
+router.get("/login", (req, res) => {
   Post.findOne({
     where: {
       id: req.params.id,
