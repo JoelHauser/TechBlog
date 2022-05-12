@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const { User, Post, Comment } = require("../models");
 const router = require("express").Router();
 
@@ -30,6 +31,18 @@ router.get("/", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+  res.render("login");
+});
+
+router.get("/register", (req, res) => {
+  res.render("/register");
+});
+
+router.get("/post/:id", (req, res) => {
   Post.findOne({
     where: {
       id: req.params.id,
