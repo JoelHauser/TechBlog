@@ -1,11 +1,11 @@
-const router = require("expess").router();
+const router = require("express").Router();
 const { User, Post, Comment } = require("../models");
 
 const withAuth = require("../utils/auth");
 
 router.get("/", withAuth, (req, res) => {
   Post.findAll({
-    when: {
+    where: {
       user_id: req.session.user_id,
     },
     attributes: ["id", "title", "content", "created_at"],
@@ -34,7 +34,7 @@ router.get("/", withAuth, (req, res) => {
     });
 });
 
-router.get("./edit/:id", withAuth, (req, res) => {
+router.get("/edit/:id", withAuth, (req, res) => {
   Post.findOne({
     where: {
       id: req.params.id,

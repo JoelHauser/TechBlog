@@ -6,7 +6,7 @@ class Comment extends Model {}
 Comment.init(
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },

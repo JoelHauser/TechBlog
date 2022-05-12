@@ -7,7 +7,7 @@ router.use("/api", apiRoutes);
 router.use("/", homeRoutes);
 router.use("/dashboard", dashboardRoutes);
 
-router.use((res, res) => {
+router.use((req, res) => {
   res.statusCode(404).end();
 });
 

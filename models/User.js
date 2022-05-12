@@ -1,8 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 const bcrypt = require("bcrypt");
-const { beforeCreate } = require("./Post");
-const { update } = require("lodash");
+
 
 class User extends Model {
   passCheck(loginPW) {
@@ -19,7 +18,7 @@ User.init(
       autoIncrement: true,
     },
     username: {
-      tpye: DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },

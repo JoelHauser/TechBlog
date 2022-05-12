@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const session = require("express-session");
 const res = require("express/lib/response");
 const { User, Post, Comment } = require("../../models");
 
@@ -51,36 +52,35 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router
-  .post("/login", (req, res) => {
-    User.findOne({
-      where: {
-        username: req.body.username,
-      },
-    }).then((dbUserData) => {
+router.post("/login", (req, res) => {
+  User.findOne({
+    where: {
+      username: req.body.username,
+    },
+  })
+    .then((dbUserData) => {
       if (!dbUserData) {
-        res.status(404).json({ message: "No user found with this ID" });
+        res.status(400).json({ message: "No username found" });
         return;
       }
-      res.json(dbUserData);
-    });
-    const validatePassword = dbUserData.passCheck(req.body.password);
-    if (!validatePassword) {
-      res.status(400).json({ message: "Wrong username or password" });
-      return;
-    }
-    req.session.save(() => {
-      req.session.user_id = dbUserData.id;
-      req.session.username = dbUserData.username;
-      req.session.loggedIn = true;
+      const validatePassword = dbUserData.passCheck(req.body.password);
+      if (!validatePassword) {
+        res.status(400).json({ message: "Wrong username or password" });
+        return;
+      }
+      return session.save(() => {
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
+        req.session.loggedIn = true;
 
-      res.json({ user: dbUserData, message: "Successfully logged in" });
+        res.json({ user: dbUserData, message: "Logged in!" });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
     });
-  })
-  .catch((err) => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+});
 
 router.post("/logout", (req, res) => {
   if (req.session.loggedIn) {
