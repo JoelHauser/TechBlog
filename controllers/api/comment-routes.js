@@ -42,7 +42,7 @@ router.post("/", withAuth, (req, res) => {
 router.put("/:id", withAuth, (req, res) => {
   Comment.update(
     {
-      comment_text: req.body.comment_text
+      comment_text: req.body.comment_text,
     },
     {
       where: {
@@ -52,7 +52,7 @@ router.put("/:id", withAuth, (req, res) => {
   )
     .then((dbCommentData) => {
       if (!dbCommentData) {
-        res.status(404).json({ message: "No comment found with that ID" });
+        res.status(404).json({ message: "No comment found with this id" });
         return;
       }
       res.json(dbCommentData);
@@ -64,14 +64,14 @@ router.put("/:id", withAuth, (req, res) => {
 });
 
 router.delete("/:id", withAuth, (req, res) => {
-  Comment.delete({
+  Comment.destroy({
     where: {
       id: req.params.id,
     },
   })
     .then((dbCommentData) => {
       if (!dbCommentData) {
-        res.status(404).json({ message: "No comment found with that ID" });
+        res.status(404).json({ message: "No comment found with this id" });
         return;
       }
       res.json(dbCommentData);

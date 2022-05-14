@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const { User, Post, Comment } = require("../models");
-
+const { Post, User, Comment } = require("../models");
 const withAuth = require("../utils/auth");
 
 router.get("/", withAuth, (req, res) => {
@@ -57,7 +56,7 @@ router.get("/edit/:id", withAuth, (req, res) => {
   })
     .then((dbPostData) => {
       if (!dbPostData) {
-        res.status(404).json({ message: "No post found with this ID" });
+        res.status(404).json({ message: "No post found with this id" });
         return;
       }
       const post = dbPostData.get({ plain: true });
